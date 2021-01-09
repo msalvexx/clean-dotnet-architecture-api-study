@@ -1,0 +1,5 @@
+{
+    "hooks": {
+        "pre-commit": "dotnet format src --check && dotnet test src/Test/Test.csproj"
+    }
+}

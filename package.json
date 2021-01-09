@@ -1,0 +1,13 @@
+{
+  "name": "clean-dotnet-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.0.0",
+    "husky": "^4.3.6"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
