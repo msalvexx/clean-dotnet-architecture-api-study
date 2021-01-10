@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Common;
@@ -102,6 +103,24 @@ namespace Test.Presentation.Controllers
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new InvalidParameterException("PasswordConfirmation"));
+        }
+
+        [Fact]
+        public static async Task ShouldReturn500IfEmailValidatorThrowsOtherException()
+        {
+            var validatorMock = MakeValidatorMock();
+            var request = new SignUpRequest
+            {
+                Name = "any_name",
+                Email = "any_email@mail.com",
+                Password = "any_password"
+            };
+            validatorMock.Setup(x => x.AssertHasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new Exception());
+            validatorMock.Setup(x => x.AssertParameterIsEqual(It.IsAny<object>(), It.IsAny<string[]>(), It.IsAny<string>())).Throws(new Exception());
+            var sut = MakeSut(validatorMock);
+            var response = await sut.HandleAsync(request);
+            response.Status.Should().Be(500);
+            response.Body.Should().IsSameOrEqualTo(new ServerErrorException());
         }
     }
 }
