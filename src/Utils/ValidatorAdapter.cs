@@ -19,7 +19,7 @@ namespace Utils
             var invalidFields = new List<string>();
             foreach (var field in requiredFields)
             {
-                var hasField = request.GetType().GetProperty(field).GetValue(request) != null;
+                var hasField = request.GetType().GetProperty(field)?.GetValue(request) != null;
                 if (!hasField)
                 {
                     hasInvalidFields = true;

@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Presentation\Presentation.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
 </Project>
