@@ -20,5 +20,12 @@ namespace Presentation.Protocols
         /// <exception cref="Exceptions.InvalidParameterException"></exception>
         /// <returns></returns>
         public void ParameterIsEqual(object first, object second, string parameterNameToThrowOnError);
+
+        /// <summary>
+        /// Check if value is email
+        /// </summary>
+        /// <exception cref="Exceptions.InvalidParameterException"></exception>
+        /// <param name="value"></param>
+        public void IsValidEmail(string value, string parameterNameToThrowOnError);
     }
 }

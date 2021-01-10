@@ -31,5 +31,9 @@ namespace Utils
                 throw new MissingParameterException(invalidFields);
             }
         }
+
+        public void IsValidEmail(string value, string parameterNameToThrowOnError)
+        {
+        }
     }
 }

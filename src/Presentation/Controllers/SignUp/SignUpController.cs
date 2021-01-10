@@ -31,6 +31,7 @@ namespace Presentation.Controllers.SignUp
         {
             this.validator.HasRequiredFields(request, new[] { "Name", "Email", "Password", "PasswordConfirmation" });
             this.validator.ParameterIsEqual(request.Password, request.PasswordConfirmation, "PasswordConfirmation");
+            this.validator.IsValidEmail(request.Email, "Email");
         }
     }
 }
