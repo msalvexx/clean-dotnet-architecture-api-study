@@ -106,7 +106,7 @@ namespace Test.Presentation.Controllers
         }
 
         [Fact]
-        public static async Task ShouldReturn500IfEmailValidatorThrowsOtherException()
+        public static async Task ShouldReturn500IfValidatorThrowsOtherException()
         {
             var validatorMock = MakeValidatorMock();
             var request = new SignUpRequest
