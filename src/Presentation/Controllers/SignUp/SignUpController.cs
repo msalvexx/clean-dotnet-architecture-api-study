@@ -23,7 +23,7 @@ namespace Presentation.Controllers.SignUp
                 {
                     return await HttpHelper.BadRequest(ex);
                 }
-                return null;
+                return await HttpHelper.ServerError();
             }
         }
 
