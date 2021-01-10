@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall": "dotnet tool install --global dotnet-format"
+    "postinstall": "dotnet tool install --global dotnet-format || echo 'continuing...'"
   },
   "devDependencies": {
     "git-commit-msg-linter": "^3.0.0",
