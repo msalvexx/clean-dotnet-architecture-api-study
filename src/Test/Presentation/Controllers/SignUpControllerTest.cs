@@ -122,5 +122,22 @@ namespace Test.Presentation.Controllers
             response.Status.Should().Be(500);
             response.Body.Should().IsSameOrEqualTo(new ServerErrorException());
         }
+
+        [Fact]
+        public static async Task ShouldReturn400IfEmailIsInvalid()
+        {
+            var validatorMock = MakeValidatorMock();
+            var request = new SignUpRequest
+            {
+                Name = "any_name",
+                Email = "invalid_email@mail.com",
+                Password = "any_password"
+            };
+            validatorMock.Setup(x => x.IsValidEmail("invalid_email@mail.com", "Email")).Throws(new InvalidParameterException("Email"));
+            var sut = MakeSut(validatorMock);
+            var response = await sut.HandleAsync(request);
+            response.Status.Should().Be(400);
+            response.Body.Should().IsSameOrEqualTo(new InvalidParameterException("Email"));
+        }
     }
 }
