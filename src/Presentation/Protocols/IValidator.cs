@@ -17,6 +17,7 @@ namespace Presentation.Protocols
         /// </summary>
         /// <param name="first"></param>
         /// <param name="second"></param>
+        /// <exception cref="Exceptions.InvalidParameterException"></exception>
         /// <returns></returns>
         public void AssertParameterIsEqual(object first, object second, string parameterNameToThrowOnError);
     }
