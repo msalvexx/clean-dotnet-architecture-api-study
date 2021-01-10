@@ -22,6 +22,14 @@ namespace Presentation.Controllers.SignUp
                     }.ActLike<IHttpResponse<object>>());
                 }
             }
+            if (!request.Password.Equals(request.PasswordConfirmation, System.StringComparison.Ordinal))
+            {
+                return await Task.Run(() => new
+                {
+                    Body = new InvalidParameterException("PasswordConfirmation"),
+                    Status = 400
+                }.ActLike<IHttpResponse<object>>());
+            }
             return new
             {
                 Body = "Ok",
