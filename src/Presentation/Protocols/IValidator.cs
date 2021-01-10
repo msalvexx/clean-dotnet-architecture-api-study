@@ -10,7 +10,7 @@ namespace Presentation.Protocols
         /// <typeparam name="T">The request type</typeparam>
         /// <exception cref="Exceptions.MissingParameterException"></exception>
         /// <returns></returns>
-        public void AssertHasRequiredFields<T>(T request, string[] requiredFields);
+        public void HasRequiredFields<T>(T request, string[] requiredFields);
 
         /// <summary>
         /// Check if objects are equal
@@ -19,6 +19,6 @@ namespace Presentation.Protocols
         /// <param name="second"></param>
         /// <exception cref="Exceptions.InvalidParameterException"></exception>
         /// <returns></returns>
-        public void AssertParameterIsEqual(object first, object second, string parameterNameToThrowOnError);
+        public void ParameterIsEqual(object first, object second, string parameterNameToThrowOnError);
     }
 }

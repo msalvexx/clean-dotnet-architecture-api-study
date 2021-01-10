@@ -29,7 +29,7 @@ namespace Test.Presentation.Controllers
                 Password = "any_password",
                 PasswordConfirmation = "any_password"
             };
-            validatorMock.Setup(x => x.AssertHasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Name"));
+            validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Name"));
             var sut = MakeSut(validatorMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
@@ -46,7 +46,7 @@ namespace Test.Presentation.Controllers
                 Password = "any_password",
                 PasswordConfirmation = "any_password"
             };
-            validatorMock.Setup(x => x.AssertHasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Email"));
+            validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Email"));
             var sut = MakeSut(validatorMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
@@ -63,7 +63,7 @@ namespace Test.Presentation.Controllers
                 Email = "any_email@mail.com",
                 PasswordConfirmation = "any_password"
             };
-            validatorMock.Setup(x => x.AssertHasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Password"));
+            validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Password"));
             var sut = MakeSut(validatorMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
@@ -80,7 +80,7 @@ namespace Test.Presentation.Controllers
                 Email = "any_email@mail.com",
                 Password = "any_password"
             };
-            validatorMock.Setup(x => x.AssertHasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("PasswordConfirmation"));
+            validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("PasswordConfirmation"));
             var sut = MakeSut(validatorMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
@@ -98,7 +98,7 @@ namespace Test.Presentation.Controllers
                 Password = "any_password",
                 PasswordConfirmation = "other_password"
             };
-            validatorMock.Setup(x => x.AssertParameterIsEqual("any_password", "other_password", It.IsAny<string>())).Throws(new InvalidParameterException("PasswordConfirmation"));
+            validatorMock.Setup(x => x.ParameterIsEqual("any_password", "other_password", It.IsAny<string>())).Throws(new InvalidParameterException("PasswordConfirmation"));
             var sut = MakeSut(validatorMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
@@ -115,8 +115,8 @@ namespace Test.Presentation.Controllers
                 Email = "any_email@mail.com",
                 Password = "any_password"
             };
-            validatorMock.Setup(x => x.AssertHasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new Exception());
-            validatorMock.Setup(x => x.AssertParameterIsEqual(It.IsAny<object>(), It.IsAny<string[]>(), It.IsAny<string>())).Throws(new Exception());
+            validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new Exception());
+            validatorMock.Setup(x => x.ParameterIsEqual(It.IsAny<object>(), It.IsAny<string[]>(), It.IsAny<string>())).Throws(new Exception());
             var sut = MakeSut(validatorMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(500);

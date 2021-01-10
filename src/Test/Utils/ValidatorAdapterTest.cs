@@ -13,7 +13,7 @@ namespace Test.Utils
         public void ShouldThrowInvalidParameterExceptionIfParametersDiferent()
         {
             var sut = new ValidatorAdapter();
-            Action act = () => sut.AssertParameterIsEqual("any", "other", "ParameterName");
+            Action act = () => sut.ParameterIsEqual("any", "other", "ParameterName");
             act.Should().Throw<InvalidParameterException>().IsSameOrEqualTo(new InvalidParameterException("ParameterName"));
         }
 
@@ -21,7 +21,7 @@ namespace Test.Utils
         public void ShouldNotThrowIfParametersEqual()
         {
             var sut = new ValidatorAdapter();
-            Action act = () => sut.AssertParameterIsEqual("any", "any", "ParameterName");
+            Action act = () => sut.ParameterIsEqual("any", "any", "ParameterName");
             act.Should().NotThrow<InvalidParameterException>();
         }
 
@@ -34,7 +34,7 @@ namespace Test.Utils
                 Email = "any_email",
                 Password = "any_password"
             };
-            Action act = () => sut.AssertHasRequiredFields(request, new[] { "Name", "Email", "Password" });
+            Action act = () => sut.HasRequiredFields(request, new[] { "Name", "Email", "Password" });
             act.Should().Throw<MissingParameterException>().IsSameOrEqualTo(new MissingParameterException("Name"));
         }
 
@@ -46,7 +46,7 @@ namespace Test.Utils
             {
                 Password = "any_password"
             };
-            Action act = () => sut.AssertHasRequiredFields(request, new[] { "Name", "Email", "Password" });
+            Action act = () => sut.HasRequiredFields(request, new[] { "Name", "Email", "Password" });
             act.Should().Throw<MissingParameterException>().IsSameOrEqualTo(new MissingParameterException(new[] { "Name", "Email" }));
         }
 
@@ -60,7 +60,7 @@ namespace Test.Utils
                 Email = "any_email@mail.com",
                 Password = "any_password"
             };
-            Action act = () => sut.AssertHasRequiredFields(request, new[] { "Name", "Email", "Password" });
+            Action act = () => sut.HasRequiredFields(request, new[] { "Name", "Email", "Password" });
             act.Should().NotThrow<MissingParameterException>();
         }
     }

@@ -6,14 +6,14 @@ namespace Utils
 {
     public class ValidatorAdapter : IValidator
     {
-        public void AssertParameterIsEqual(object first, object second, string parameterNameToThrowOnError)
+        public void ParameterIsEqual(object first, object second, string parameterNameToThrowOnError)
         {
             if (!first.Equals(second))
             {
                 throw new InvalidParameterException(parameterNameToThrowOnError);
             }
         }
-        public void AssertHasRequiredFields<T>(T request, string[] requiredFields)
+        public void HasRequiredFields<T>(T request, string[] requiredFields)
         {
             var hasInvalidFields = false;
             var invalidFields = new List<string>();
