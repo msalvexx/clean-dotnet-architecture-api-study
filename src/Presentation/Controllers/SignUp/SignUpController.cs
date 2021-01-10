@@ -29,8 +29,7 @@ namespace Presentation.Controllers.SignUp
 
         public void ValidateOrThrows(ISignupRequest request)
         {
-            var requiredFields = new[] { "Name", "Email", "Password", "PasswordConfirmation" };
-            this.validator.AssertHasRequiredFields(request, requiredFields);
+            this.validator.AssertHasRequiredFields(request, new[] { "Name", "Email", "Password", "PasswordConfirmation" });
             this.validator.AssertParameterIsEqual(request.Password, request.PasswordConfirmation, "PasswordConfirmation");
         }
     }
