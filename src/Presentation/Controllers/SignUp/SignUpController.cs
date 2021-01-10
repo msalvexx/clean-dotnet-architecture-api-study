@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using ImpromptuInterface;
 using Presentation.Exceptions;
+using Presentation.Helpers;
 using Presentation.Protocols;
 
 namespace Presentation.Controllers.SignUp
@@ -15,26 +15,14 @@ namespace Presentation.Controllers.SignUp
                 var hasField = request.GetType().GetProperty(field).GetValue(request) != null;
                 if (!hasField)
                 {
-                    return await Task.Run(() => new
-                    {
-                        Body = new MissingParameterException(field),
-                        Status = 400
-                    }.ActLike<IHttpResponse<object>>());
+                    return await HttpHelper.BadRequest(new MissingParameterException(field));
                 }
             }
             if (!request.Password.Equals(request.PasswordConfirmation, System.StringComparison.Ordinal))
             {
-                return await Task.Run(() => new
-                {
-                    Body = new InvalidParameterException("PasswordConfirmation"),
-                    Status = 400
-                }.ActLike<IHttpResponse<object>>());
+                return await HttpHelper.BadRequest(new InvalidParameterException("PasswordConfirmation"));
             }
-            return new
-            {
-                Body = "Ok",
-                Status = 200
-            }.ActLike<IHttpResponse<object>>();
+            return await HttpHelper.Success("Ok");
         }
     }
 }
