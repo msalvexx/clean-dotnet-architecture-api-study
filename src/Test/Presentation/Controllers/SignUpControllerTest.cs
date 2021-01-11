@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Data.UseCases;
 using FluentAssertions;
 using FluentAssertions.Common;
 using Moq;
@@ -12,17 +13,15 @@ namespace Test.Presentation.Controllers
 {
     public class SignUpControllerTest
     {
-        public static Mock<IValidator> MakeValidatorMock()
-        {
-            var validatorMock = new Mock<IValidator>();
-            return validatorMock;
-        }
-        public static SignUpController MakeSut(Mock<IValidator> validatorMock) => new(validatorMock.Object);
+        public static Mock<IAddAccount> MakeAddAccountMock() => new();
+        public static Mock<IValidator> MakeValidatorMock() => new();
+        public static SignUpController MakeSut(Mock<IValidator> validatorMock, Mock<IAddAccount> addAccountMock) => new(validatorMock.Object, addAccountMock.Object);
 
         [Fact]
         public static async Task ShouldReturn400WhenNoNameProvided()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Email = "any_email@mail.com",
@@ -30,7 +29,7 @@ namespace Test.Presentation.Controllers
                 PasswordConfirmation = "any_password"
             };
             validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Name"));
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new MissingParameterException("Name"));
@@ -40,6 +39,7 @@ namespace Test.Presentation.Controllers
         public static async Task ShouldReturn400WhenNoEmailProvided()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Name = "any_name",
@@ -47,7 +47,7 @@ namespace Test.Presentation.Controllers
                 PasswordConfirmation = "any_password"
             };
             validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Email"));
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new MissingParameterException("Email"));
@@ -57,6 +57,7 @@ namespace Test.Presentation.Controllers
         public static async Task ShouldReturn400WhenNoPasswordProvided()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Name = "any_name",
@@ -64,7 +65,7 @@ namespace Test.Presentation.Controllers
                 PasswordConfirmation = "any_password"
             };
             validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("Password"));
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new MissingParameterException("Password"));
@@ -74,6 +75,7 @@ namespace Test.Presentation.Controllers
         public static async Task ShouldReturn400WhenNoPasswordConfirmationProvided()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Name = "any_name",
@@ -81,7 +83,7 @@ namespace Test.Presentation.Controllers
                 Password = "any_password"
             };
             validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new MissingParameterException("PasswordConfirmation"));
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new MissingParameterException("PasswordConfirmation"));
@@ -91,6 +93,7 @@ namespace Test.Presentation.Controllers
         public static async Task ShouldReturn400WhenPasswordConfirmationNotMatches()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Name = "any_name",
@@ -99,7 +102,7 @@ namespace Test.Presentation.Controllers
                 PasswordConfirmation = "other_password"
             };
             validatorMock.Setup(x => x.ParameterIsEqual("any_password", "other_password", It.IsAny<string>())).Throws(new InvalidParameterException("PasswordConfirmation"));
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new InvalidParameterException("PasswordConfirmation"));
@@ -109,6 +112,7 @@ namespace Test.Presentation.Controllers
         public static async Task ShouldReturn500IfValidatorThrowsOtherException()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Name = "any_name",
@@ -117,7 +121,7 @@ namespace Test.Presentation.Controllers
             };
             validatorMock.Setup(x => x.HasRequiredFields(It.IsAny<object>(), It.IsAny<string[]>())).Throws(new Exception());
             validatorMock.Setup(x => x.ParameterIsEqual(It.IsAny<object>(), It.IsAny<string[]>(), It.IsAny<string>())).Throws(new Exception());
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(500);
             response.Body.Should().IsSameOrEqualTo(new ServerErrorException());
@@ -127,6 +131,7 @@ namespace Test.Presentation.Controllers
         public static async Task ShouldReturn400IfEmailIsInvalid()
         {
             var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
             var request = new SignUpRequest
             {
                 Name = "any_name",
@@ -134,10 +139,26 @@ namespace Test.Presentation.Controllers
                 Password = "any_password"
             };
             validatorMock.Setup(x => x.IsValidEmail("invalid_email@mail.com", "Email")).Throws(new InvalidParameterException("Email"));
-            var sut = MakeSut(validatorMock);
+            var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
             response.Body.Should().IsSameOrEqualTo(new InvalidParameterException("Email"));
+        }
+
+        [Fact]
+        public static async Task ShouldCallAddAccountWithCorrectValues()
+        {
+            var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
+            var request = new SignUpRequest
+            {
+                Name = "any_name",
+                Email = "valid_email@mail.com",
+                Password = "any_password"
+            };
+            var sut = MakeSut(validatorMock, addAccountMock);
+            var response = await sut.HandleAsync(request);
+            addAccountMock.Verify(x => x.Add(It.Is<IAddAccountModel>(x => x.Password == request.Password && x.Email == request.Email && x.Name == request.Name)), Times.Once);
         }
     }
 }
