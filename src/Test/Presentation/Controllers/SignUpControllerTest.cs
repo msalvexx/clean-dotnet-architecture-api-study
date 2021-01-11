@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Data.UseCases;
 using FluentAssertions;
-using FluentAssertions.Common;
 using Moq;
 using Presentation.Controllers.SignUp;
 using Presentation.Exceptions;
@@ -32,7 +31,8 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
-            response.Body.Should().IsSameOrEqualTo(new MissingParameterException("Name"));
+            response.Body.Should().BeOfType<MissingParameterException>();
+            response.Body.As<MissingParameterException>().Message.Should().Be("Missing Parameter: Name");
         }
 
         [Fact]
@@ -50,7 +50,8 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
-            response.Body.Should().IsSameOrEqualTo(new MissingParameterException("Email"));
+            response.Body.Should().BeOfType<MissingParameterException>();
+            response.Body.As<MissingParameterException>().Message.Should().Be("Missing Parameter: Email");
         }
 
         [Fact]
@@ -68,7 +69,8 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
-            response.Body.Should().IsSameOrEqualTo(new MissingParameterException("Password"));
+            response.Body.Should().BeOfType<MissingParameterException>();
+            response.Body.As<MissingParameterException>().Message.Should().Be("Missing Parameter: Password");
         }
 
         [Fact]
@@ -86,7 +88,8 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
-            response.Body.Should().IsSameOrEqualTo(new MissingParameterException("PasswordConfirmation"));
+            response.Body.Should().BeOfType<MissingParameterException>();
+            response.Body.As<MissingParameterException>().Message.Should().Be("Missing Parameter: PasswordConfirmation");
         }
 
         [Fact]
@@ -105,7 +108,8 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
-            response.Body.Should().IsSameOrEqualTo(new InvalidParameterException("PasswordConfirmation"));
+            response.Body.Should().BeOfType<InvalidParameterException>();
+            response.Body.As<InvalidParameterException>().Message.Should().Be("Invalid Parameter: PasswordConfirmation");
         }
 
         [Fact]
@@ -124,7 +128,7 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(500);
-            response.Body.Should().IsSameOrEqualTo(new ServerErrorException());
+            response.Body.Should().BeOfType<ServerErrorException>();
         }
 
         [Fact]
@@ -142,7 +146,8 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(400);
-            response.Body.Should().IsSameOrEqualTo(new InvalidParameterException("Email"));
+            response.Body.Should().BeOfType<InvalidParameterException>();
+            response.Body.As<InvalidParameterException>().Message.Should().Be("Invalid Parameter: Email");
         }
 
         [Fact]
@@ -177,7 +182,7 @@ namespace Test.Presentation.Controllers
             var sut = MakeSut(validatorMock, addAccountMock);
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(500);
-            response.Body.Should().IsSameOrEqualTo(new ServerErrorException());
+            response.Body.Should().BeOfType<ServerErrorException>();
         }
     }
 }
