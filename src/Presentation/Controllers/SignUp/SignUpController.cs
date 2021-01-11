@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Data.UseCases;
+using ImpromptuInterface;
 using Presentation.Exceptions;
 using Presentation.Helpers;
 using Presentation.Protocols;
@@ -9,12 +11,23 @@ namespace Presentation.Controllers.SignUp
     public class SignUpController
     {
         private readonly IValidator validator;
-        public SignUpController(IValidator validator) => this.validator = validator;
+        private readonly IAddAccount addAccount;
+        public SignUpController(IValidator validator, IAddAccount addAccount)
+        {
+            this.validator = validator;
+            this.addAccount = addAccount;
+        }
         public async Task<IHttpResponse<object>> HandleAsync(ISignupRequest request)
         {
             try
             {
                 this.ValidateOrThrows(request);
+                var account = await this.addAccount.Add(new
+                {
+                    request.Name,
+                    request.Email,
+                    request.Password
+                }.ActLike<IAddAccountModel>());
                 return await HttpHelper.Success("Ok");
             }
             catch (Exception ex)
