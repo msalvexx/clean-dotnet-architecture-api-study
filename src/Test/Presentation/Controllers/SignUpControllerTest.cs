@@ -160,5 +160,24 @@ namespace Test.Presentation.Controllers
             var response = await sut.HandleAsync(request);
             addAccountMock.Verify(x => x.Add(It.Is<IAddAccountModel>(x => x.Password == request.Password && x.Email == request.Email && x.Name == request.Name)), Times.Once);
         }
+
+        [Fact]
+        public static async Task ShouldReturnError500IfAddAccountThrows()
+        {
+            var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
+            var request = new SignUpRequest
+            {
+                Name = "any_name",
+                Email = "any_email@mail.com",
+                Password = "any_password",
+                PasswordConfirmation = "any_password"
+            };
+            addAccountMock.Setup(x => x.Add(It.IsAny<IAddAccountModel>())).Throws(new Exception());
+            var sut = MakeSut(validatorMock, addAccountMock);
+            var response = await sut.HandleAsync(request);
+            response.Status.Should().Be(500);
+            response.Body.Should().IsSameOrEqualTo(new ServerErrorException());
+        }
     }
 }
