@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Data.UseCases;
+using Domain.Models;
 using FluentAssertions;
+using ImpromptuInterface;
 using Moq;
 using Presentation.Controllers.SignUp;
 using Presentation.Exceptions;
@@ -183,6 +185,37 @@ namespace Test.Presentation.Controllers
             var response = await sut.HandleAsync(request);
             response.Status.Should().Be(500);
             response.Body.Should().BeOfType<ServerErrorException>();
+        }
+
+        [Fact]
+        public static async Task ShouldReturn200IfValidDataIsProvided()
+        {
+            var validatorMock = MakeValidatorMock();
+            var addAccountMock = MakeAddAccountMock();
+            var request = new SignUpRequest
+            {
+                Name = "valid_name",
+                Email = "valid_email@mail.com",
+                Password = "valid_password",
+                PasswordConfirmation = "valid_password"
+            };
+            addAccountMock.Setup(x => x.Add(It.IsAny<IAddAccountModel>())).Returns(Task.Run(() => new
+            {
+                Id = "valid_id",
+                Name = "valid_name",
+                Email = "valid_email@mail.com",
+                Password = "valid_password"
+            }.ActLike<IAccount>()));
+            var sut = MakeSut(validatorMock, addAccountMock);
+            var response = await sut.HandleAsync(request);
+            response.Status.Should().Be(200);
+            response.Body.Should().BeEquivalentTo(new
+            {
+                Id = "valid_id",
+                Name = "valid_name",
+                Email = "valid_email@mail.com",
+                Password = "valid_password"
+            }.ActLike<IAccount>());
         }
     }
 }
