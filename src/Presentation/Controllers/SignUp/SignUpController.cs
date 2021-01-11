@@ -28,7 +28,7 @@ namespace Presentation.Controllers.SignUp
                     request.Email,
                     request.Password
                 }.ActLike<IAddAccountModel>());
-                return await HttpHelper.Success("Ok");
+                return await HttpHelper.Success(account);
             }
             catch (Exception ex)
             {
