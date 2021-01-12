@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Presentation.Exceptions;
 using Presentation.Protocols;
 
@@ -13,24 +14,24 @@ namespace Utils
                 throw new InvalidParameterException(parameterNameToThrowOnError);
             }
         }
+
         public void HasRequiredFields<T>(T request, string[] requiredFields)
         {
-            var hasInvalidFields = false;
             var invalidFields = new List<string>();
             foreach (var field in requiredFields)
             {
-                var hasField = request.GetType().GetProperty(field)?.GetValue(request) != null;
-                if (!hasField)
+                if (!HasField(request, field))
                 {
-                    hasInvalidFields = true;
                     invalidFields.Add(field);
                 }
             }
-            if (hasInvalidFields)
+            if (invalidFields.Any())
             {
                 throw new MissingParameterException(invalidFields);
             }
         }
+
+        private static bool HasField<T>(T request, string field) => request.GetType().GetProperty(field)?.GetValue(request) != null;
 
         public void IsValidEmail(string value, string parameterNameToThrowOnError)
         {
