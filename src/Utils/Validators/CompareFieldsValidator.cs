@@ -14,16 +14,24 @@ namespace Utils.Validators
         }
         public void Validate<T>(T input)
         {
-            var fieldNameValue = GetFieldNameValue(input);
-            var fieldNameToCompareValue = GetFieldNameToCompareValue(input);
-            if (fieldNameValue == null || fieldNameToCompareValue == null || !fieldNameValue.Equals(fieldNameToCompareValue))
+            var fieldNameValue = this.GetFieldValue(input, this.fieldName);
+            var fieldNameToCompareValue = this.GetFieldValue(input, this.fieldNameToCompare);
+            if (!fieldNameValue.Equals(fieldNameToCompareValue))
             {
                 throw new InvalidParameterException(this.fieldNameToCompare);
             }
         }
 
-        private object GetFieldNameValue<T>(T input) => input?.GetType()?.GetProperty(this.fieldName)?.GetValue(input);
-
-        private object GetFieldNameToCompareValue<T>(T input) => input?.GetType()?.GetProperty(this.fieldNameToCompare)?.GetValue(input);
+        private object GetFieldValue<T>(T input, string field)
+        {
+            try
+            {
+                return input.GetType().GetProperty(field).GetValue(input);
+            }
+            catch
+            {
+                throw new InvalidParameterException(this.fieldNameToCompare);
+            }
+        }
     }
 }
