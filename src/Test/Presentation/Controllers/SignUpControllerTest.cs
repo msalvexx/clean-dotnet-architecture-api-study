@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Data.UseCases;
 using Domain.Models;
+using Domain.UseCases;
 using FluentAssertions;
 using ImpromptuInterface;
 using Moq;

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Domain.Models;
 
-namespace Data.UseCases
+namespace Domain.UseCases
 {
     public interface IAddAccountModel
     {
