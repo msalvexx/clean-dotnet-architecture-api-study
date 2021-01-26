@@ -3,11 +3,11 @@ using Utils.Protocols;
 
 namespace Utils.Validators
 {
-    public class CompareFieldsValidator : IValidator
+    public class CompareFieldsValidation : IValidator
     {
         private readonly string fieldName;
         private readonly string fieldNameToCompare;
-        public CompareFieldsValidator(string fieldName, string fieldNameToCompare)
+        public CompareFieldsValidation(string fieldName, string fieldNameToCompare)
         {
             this.fieldName = fieldName;
             this.fieldNameToCompare = fieldNameToCompare;

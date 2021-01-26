@@ -7,9 +7,9 @@ using Xunit;
 
 namespace Test.Utils
 {
-    public class CompareFieldsValidatorTest
+    public class CompareFieldsValidationTest
     {
-        private static CompareFieldsValidator MakeSut() => new("Password", "PasswordConfirmation");
+        private static CompareFieldsValidation MakeSut() => new("Password", "PasswordConfirmation");
 
         [Fact]
         public void ShouldThrowInvalidParameterExceptionIfParametersDiferent()

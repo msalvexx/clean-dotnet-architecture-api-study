@@ -5,10 +5,10 @@ using Utils.Protocols;
 
 namespace Utils.Validators
 {
-    public class RequiredFieldValidator : IValidator
+    public class RequiredFieldValidation : IValidator
     {
         private readonly string[] requiredFields;
-        public RequiredFieldValidator(string[] requiredFields) => this.requiredFields = requiredFields;
+        public RequiredFieldValidation(string[] requiredFields) => this.requiredFields = requiredFields;
         public void Validate<T>(T input)
         {
             var invalidFields = new List<string>();

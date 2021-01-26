@@ -7,9 +7,9 @@ using Xunit;
 
 namespace Test.Utils
 {
-    public class RequiredFieldValidatorTest
+    public class RequiredFieldValidationTest
     {
-        private static RequiredFieldValidator MakeSut() => new(new[] { "Name", "Email", "Password" });
+        private static RequiredFieldValidation MakeSut() => new(new[] { "Name", "Email", "Password" });
 
         [Fact]
         public void ShouldThrowMissingParameterExceptionIfOneParameterNotExistsInRequest()
