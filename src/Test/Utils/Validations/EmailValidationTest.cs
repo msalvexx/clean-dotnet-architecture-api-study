@@ -43,5 +43,20 @@ namespace Test.Utils
             sut.Validate(request);
             emailValidatorMock.Verify(x => x.IsValid("any_email@mail.com"));
         }
+
+        [Fact]
+        public static void ShouldNotThrowInvalidParameterExceptionIfEmailIsValid()
+        {
+            var emailValidatorMock = MakeEmailValidatorMock();
+            emailValidatorMock.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
+            var sut = MakeSut(emailValidatorMock.Object);
+            var request = new
+            {
+                Email = "valid_email@mail.com",
+                Password = "any_password"
+            };
+            Action act = () => sut.Validate(request);
+            act.Should().NotThrow<InvalidParameterException>();
+        }
     }
 }
