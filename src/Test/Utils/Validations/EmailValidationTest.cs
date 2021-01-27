@@ -4,14 +4,14 @@ using FluentAssertions.Common;
 using Moq;
 using Presentation.Exceptions;
 using Utils.Protocols;
-using Utils.Validators;
 using Xunit;
+using Validators = Utils.Validators;
 
 namespace Test.Utils
 {
     public class EmailValidationTest
     {
-        public static EmailValidation MakeSut(IEmailValidator emailValidator) => new("Email", emailValidator);
+        public static Validators.EmailValidation MakeSut(IEmailValidator emailValidator) => new("Email", emailValidator);
         public static Mock<IEmailValidator> MakeEmailValidatorMock() => new();
 
         [Fact]

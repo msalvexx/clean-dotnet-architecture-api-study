@@ -3,8 +3,8 @@ using FluentAssertions;
 using Moq;
 using Presentation.Exceptions;
 using Presentation.Protocols;
-using Utils.Validators;
 using Xunit;
+using Validators = Utils.Validators;
 
 namespace Test.Utils
 {
@@ -13,13 +13,13 @@ namespace Test.Utils
     {
         private static Mock<IValidator> MakeValidatorMock<T>() where T : IValidator => new();
 
-        private static CompositeValidation MakeSut(IValidator[] validators) => new(validators);
+        private static Validators.CompositeValidation MakeSut(IValidator[] validators) => new(validators);
 
         [Fact]
         public void ShouldCallValidateForeachValidatorInArray()
         {
-            var compareFieldsMock = MakeValidatorMock<CompareFieldsValidation>();
-            var emailValidationMock = MakeValidatorMock<EmailValidation>();
+            var compareFieldsMock = MakeValidatorMock<Validators.CompareFieldsValidation>();
+            var emailValidationMock = MakeValidatorMock<Validators.EmailValidation>();
             var sut = MakeSut(new[] { compareFieldsMock.Object, emailValidationMock.Object });
             var data = new
             {
@@ -33,8 +33,8 @@ namespace Test.Utils
         [Fact]
         public void ShouldThrowIfAnyValidatorThrows()
         {
-            var compareFieldsMock = MakeValidatorMock<CompareFieldsValidation>();
-            var emailValidationMock = MakeValidatorMock<EmailValidation>();
+            var compareFieldsMock = MakeValidatorMock<Validators.CompareFieldsValidation>();
+            var emailValidationMock = MakeValidatorMock<Validators.EmailValidation>();
             compareFieldsMock.Setup(x => x.Validate(It.IsAny<object>())).Throws(new InvalidParameterException("Field"));
             var sut = MakeSut(new[] { compareFieldsMock.Object, emailValidationMock.Object });
             var data = new
