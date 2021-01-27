@@ -29,6 +29,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
     <ProjectReference Include="..\Infra\Infra.csproj" />
+    <ProjectReference Include="..\Main\Main.csproj" />
   </ItemGroup>
 
 </Project>

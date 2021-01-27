@@ -15,5 +15,7 @@ namespace Utils.Validators
                 validator.Validate(input);
             }
         }
+
+        public IValidator[] GetValidators() => this.validators;
     }
 }
