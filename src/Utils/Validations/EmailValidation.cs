@@ -1,4 +1,5 @@
 using Presentation.Exceptions;
+using Presentation.Protocols;
 using Utils.Protocols;
 
 namespace Utils.Validators

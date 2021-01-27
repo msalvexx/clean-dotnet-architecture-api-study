@@ -19,11 +19,11 @@ namespace Presentation.Controllers.SignUp
             this.addAccount = addAccount;
         }
 
-        public async Task<IHttpResponse<object>> HandleAsync(ISignupRequest request)
+        public async Task<IHttpResponse<object>> HandleAsync(ISignUpRequest request)
         {
             try
             {
-                this.ValidateOrThrows(request);
+                this.validator.Validate(request);
                 var account = await this.addAccount.Add(new
                 {
                     request.Name,
@@ -40,13 +40,6 @@ namespace Presentation.Controllers.SignUp
                 }
                 return await HttpHelper.ServerError();
             }
-        }
-
-        public void ValidateOrThrows(ISignupRequest request)
-        {
-            this.validator.HasRequiredFields(request, new[] { "Name", "Email", "Password", "PasswordConfirmation" });
-            this.validator.ParameterIsEqual(request.Password, request.PasswordConfirmation, "PasswordConfirmation");
-            this.validator.IsValidEmail(request.Email, "Email");
         }
     }
 }
