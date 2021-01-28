@@ -3,7 +3,6 @@ using Data.Protocols;
 using Data.UseCases;
 using Domain.UseCases;
 using FluentAssertions;
-using ImpromptuInterface;
 using Moq;
 using Xunit;
 
@@ -15,12 +14,12 @@ namespace Test.Data
         private static Mock<IHasher> MakeHasher() => new();
         private static DbAddAccount MakeSut(Mock<IHasher> hasherMock, Mock<IAddAccountRepository> addAccountRepositoryMock) => new(hasherMock.Object, addAccountRepositoryMock.Object);
 
-        private static IAddAccountModel MakeData() => new
+        private static IAddAccountModel MakeData() => new AddAccountModel
         {
             Name = "any_name",
             Email = "any_email@mail.com",
             Password = "any_password"
-        }.ActLike<IAddAccountModel>();
+        };
 
         [Fact]
         public void ShouldCallHasherWithCorrectValue()
@@ -61,6 +60,18 @@ namespace Test.Data
                 Password = "hashed_value"
             };
             addAccountMock.Verify(x => x.Add(It.Is<IAddAccountModel>(x => x.Equals(expectedData))), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldDbAddAccountThrowIfAddAccountRepositoryThrows()
+        {
+            var addAccountMock = MakeAddAccountRepository();
+            var hasherMock = MakeHasher();
+            addAccountMock.Setup(x => x.Add(It.IsAny<IAddAccountModel>())).Throws(new Exception());
+            var sut = MakeSut(hasherMock, addAccountMock);
+            var data = MakeData();
+            Action act = () => sut.Add(data);
+            act.Should().Throw<Exception>();
         }
     }
 }
