@@ -2,7 +2,7 @@ using Infra.Adapters;
 using Presentation.Protocols;
 using Validations = Utils.Validators;
 
-namespace Factories.Validators
+namespace Main.Factories.Validators
 {
     public static class SignUpValidatorBuilder
     {

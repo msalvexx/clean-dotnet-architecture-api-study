@@ -1,4 +1,4 @@
-using Factories.Controllers;
+using Main.Factories.Controllers;
 using Main.Routes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

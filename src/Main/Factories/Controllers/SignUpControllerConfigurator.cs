@@ -1,8 +1,8 @@
-using Factories.Validators;
+using Main.Factories.Validators;
 using Microsoft.Extensions.DependencyInjection;
 using Presentation.Controllers.SignUp;
 
-namespace Factories.Controllers
+namespace Main.Factories.Controllers
 {
     public static class SignUpControllerConfigurator
     {
