@@ -2,4 +2,4 @@ node_modules
 **/obj
 **/bin
 **/TestResults
-/coveragereport
+**/coveragereport

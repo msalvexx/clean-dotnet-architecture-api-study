@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall": "dotnet tool install --global dotnet-format || echo 'continuing...'"
+    "postinstall": "dotnet tool install --global dotnet-format || echo 'continuing...'",
+    "remove:testfolder": "rmdir \"src\\TestResults\" /Q /S || echo 'continuing...",
+    "test:ci": "npm run remove:testfolder && dotnet test src/src.sln --collect:\"XPlat Code Coverage\" --settings src/coverlet.runsettings && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html "
   },
   "devDependencies": {
     "git-commit-msg-linter": "^3.0.0",
