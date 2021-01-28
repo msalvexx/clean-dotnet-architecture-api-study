@@ -15,6 +15,19 @@ namespace Test.Utils
         public static Mock<IEmailValidator> MakeEmailValidatorMock() => new();
 
         [Fact]
+        public static void ShouldThrowInvalidParameterExceptionIfEmailIsMissing()
+        {
+            var emailValidatorMock = MakeEmailValidatorMock();
+            var sut = MakeSut(emailValidatorMock.Object);
+            var request = new
+            {
+                Password = "any_password"
+            };
+            Action act = () => sut.Validate(request);
+            act.Should().Throw<InvalidParameterException>().IsSameOrEqualTo(new InvalidParameterException("Email"));
+        }
+
+        [Fact]
         public static void ShouldThrowInvalidParameterExceptionIfEmailIsInvalid()
         {
             var emailValidatorMock = MakeEmailValidatorMock();
