@@ -16,11 +16,18 @@ namespace Utils.Validators
 
         public void Validate<T>(T input)
         {
-            var fieldToValidate = input.GetType().GetProperty(this.fieldName)?.GetValue(input).ToString();
+            if (this.IsMissingProperty(input))
+            {
+                throw new InvalidParameterException(this.fieldName);
+            }
+            var fieldToValidate = this.GetFieldToValidate(input);
             if (!this.emailValidator.IsValid(fieldToValidate))
             {
                 throw new InvalidParameterException(this.fieldName);
             }
         }
+
+        private string GetFieldToValidate<T>(T input) => input.GetType().GetProperty(this.fieldName).GetValue(input).ToString();
+        private bool IsMissingProperty<T>(T input) => input.GetType().GetProperty(this.fieldName) is null;
     }
 }
