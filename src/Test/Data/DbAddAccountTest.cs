@@ -1,6 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using Data.Protocols;
 using Data.UseCases;
+using Domain.Models;
 using Domain.UseCases;
 using FluentAssertions;
 using Moq;
@@ -13,12 +15,18 @@ namespace Test.Data
         private static Mock<IAddAccountRepository> MakeAddAccountRepository() => new();
         private static Mock<IHasher> MakeHasher() => new();
         private static DbAddAccount MakeSut(Mock<IHasher> hasherMock, Mock<IAddAccountRepository> addAccountRepositoryMock) => new(hasherMock.Object, addAccountRepositoryMock.Object);
-
         private static IAddAccountModel MakeData() => new AddAccountModel
         {
             Name = "any_name",
             Email = "any_email@mail.com",
             Password = "any_password"
+        };
+        private static IAccount MakeFakeAccount() => new Account
+        {
+            Id = "any_id",
+            Name = "any_name",
+            Email = "any_email@mail.com",
+            Password = "hashed_password"
         };
 
         [Fact]
@@ -72,6 +80,18 @@ namespace Test.Data
             var data = MakeData();
             Action act = () => sut.Add(data);
             act.Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public async Task ShouldReturnAnAccountOnSuccess()
+        {
+            var addAccountMock = MakeAddAccountRepository();
+            addAccountMock.Setup(x => x.Add(It.IsAny<IAddAccountModel>())).Returns(Task.FromResult(MakeFakeAccount()));
+            var hasherMock = MakeHasher();
+            var sut = MakeSut(hasherMock, addAccountMock);
+            var data = MakeData();
+            var account = await sut.Add(data);
+            account.Should().BeEquivalentTo(MakeFakeAccount());
         }
     }
 }
