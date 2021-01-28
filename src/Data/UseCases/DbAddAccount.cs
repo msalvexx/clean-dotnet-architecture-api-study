@@ -19,13 +19,13 @@ namespace Data.UseCases
         public Task<IAccount> Add(IAddAccountModel data)
         {
             var hashedPassword = this.hasher.Generate(data.Password);
-            this.repo.Add(new AddAccountModel
+            var account = this.repo.Add(new AddAccountModel
             {
                 Name = data.Name,
                 Email = data.Email,
                 Password = hashedPassword
             });
-            return null;
+            return account;
         }
     }
 }
