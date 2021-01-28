@@ -6,6 +6,7 @@ using Domain.Models;
 using Domain.UseCases;
 using FluentAssertions;
 using Moq;
+using ObjectsComparer;
 using Xunit;
 
 namespace Test.Data
@@ -67,7 +68,8 @@ namespace Test.Data
                 Email = "any_email@mail.com",
                 Password = "hashed_value"
             };
-            addAccountMock.Verify(x => x.Add(It.Is<IAddAccountModel>(x => x.Equals(expectedData))), Times.Once);
+            var comparer = new Comparer<IAddAccountModel>();
+            addAccountMock.Verify(x => x.Add(It.Is<IAddAccountModel>(x => comparer.Compare(x, expectedData))), Times.Once);
         }
 
         [Fact]
