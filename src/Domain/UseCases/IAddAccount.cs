@@ -12,6 +12,6 @@ namespace Domain.UseCases
 
     public interface IAddAccount
     {
-        public Task<IAccount> Add(IAddAccountModel request);
+        public Task<IAccount> Add(IAddAccountModel data);
     }
 }
