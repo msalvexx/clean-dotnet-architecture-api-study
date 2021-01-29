@@ -1,5 +1,6 @@
-using Infra.Db.MongoDb.Configurators;
 using Main.Factories.Controllers;
+using Main.Factories.Data;
+using Main.Factories.Infra;
 using Main.Routes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,8 +13,9 @@ namespace Main
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureInfra();
+            services.ConfigureData();
             services.ConfigureSignUpController();
-            MongoDbMapper.Map();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
