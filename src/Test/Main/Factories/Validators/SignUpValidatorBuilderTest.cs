@@ -1,7 +1,6 @@
-using FluentAssertions;
-using FluentAssertions.Common;
 using Main.Factories.Validators;
 using Moq;
+using ObjectsComparer;
 using Presentation.Protocols;
 using Utils.Protocols;
 using Xunit;
@@ -26,7 +25,8 @@ namespace Test.Main.Factories.Validators
             var emailValidatorMock = MakeEmailValidatorMock();
             var validators = MakeValidators(emailValidatorMock);
             var sut = MakeSut();
-            sut.GetValidators().Should().IsSameOrEqualTo(validators);
+            var comparer = new Comparer<IValidator[]>();
+            Assert.True(comparer.Compare(sut.GetValidators(), validators));
         }
     }
 }

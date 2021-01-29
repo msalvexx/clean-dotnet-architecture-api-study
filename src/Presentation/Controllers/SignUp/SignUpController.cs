@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Domain.UseCases;
-using ImpromptuInterface;
 using Presentation.Exceptions;
 using Presentation.Helpers;
 using Presentation.Protocols;
@@ -25,12 +24,12 @@ namespace Presentation.Controllers.SignUp
             {
                 dynamic body = request.Body;
                 this.validator.Validate(body);
-                var account = await this.addAccount.Add(new
+                var account = await this.addAccount.Add(new AddAccountModel
                 {
-                    body.Name,
-                    body.Email,
-                    body.Password
-                }.ActLike<IAddAccountModel>());
+                    Name = body.Name,
+                    Email = body.Email,
+                    Password = body.Password
+                });
                 return await HttpHelper.Success(account);
             }
             catch (Exception ex)

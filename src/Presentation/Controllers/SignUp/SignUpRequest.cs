@@ -8,7 +8,7 @@ namespace Presentation.Controllers.SignUp
         public string PasswordConfirmation { get; set; }
     }
 
-    public class SignUpRequest
+    public class SignUpRequest : ISignUpRequest
     {
         public string Name { get; set; }
         public string Email { get; set; }

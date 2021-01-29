@@ -25,18 +25,17 @@ namespace Test.Presentation.Controllers
             var validatorMock = MakeValidatorMock();
             var addAccountMock = MakeAddAccountMock();
             var sut = MakeSut(validatorMock, addAccountMock);
-            var request = new HttpRequest
+            var body = new SignUpRequest
             {
-                Body = new SignUpRequest
-                {
-                    Name = "any_name",
-                    Email = "any_email@mail.com",
-                    Password = "any_password",
-                    PasswordConfirmation = "any_password"
-                }
+                Name = "any_name",
+                Email = "any_email@mail.com",
+                Password = "any_password",
+                PasswordConfirmation = "any_password"
             };
+            var request = new HttpRequest { Body = body };
             var response = await sut.HandleAsync(request);
-            validatorMock.Verify(x => x.Validate(It.IsAny<object>()), Times.Once);
+            var comparer = new ObjectsComparer.Comparer<ISignUpRequest>();
+            validatorMock.Verify(x => x.Validate(It.Is<ISignUpRequest>(x => comparer.Compare(x, body))), Times.Once);
         }
 
         [Theory]
@@ -100,13 +99,21 @@ namespace Test.Presentation.Controllers
             {
                 Body = new SignUpRequest
                 {
-                    Name = "any_name",
+                    Name = "valid_name",
                     Email = "valid_email@mail.com",
-                    Password = "any_password"
+                    Password = "valid_password",
+                    PasswordConfirmation = "valid_password"
                 }
             };
+            var expectedAddAccountModel = new AddAccountModel
+            {
+                Name = "valid_name",
+                Email = "valid_email@mail.com",
+                Password = "valid_password"
+            };
             var response = await sut.HandleAsync(request);
-            addAccountMock.Verify(x => x.Add(It.IsAny<IAddAccountModel>()), Times.Once);
+            var comparer = new ObjectsComparer.Comparer<IAddAccountModel>();
+            addAccountMock.Verify(x => x.Add(It.Is<IAddAccountModel>(x => comparer.Compare(x, expectedAddAccountModel))), Times.Once);
         }
 
         [Fact]
