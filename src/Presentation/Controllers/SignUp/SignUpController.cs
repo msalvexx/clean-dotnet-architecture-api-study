@@ -31,12 +31,12 @@ namespace Presentation.Controllers.SignUp
                 });
                 return await HttpHelper.Success(account);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                if (ex is MissingParameterException or InvalidParameterException)
-                {
-                    return await HttpHelper.BadRequest(ex);
-                }
+                return await HttpHelper.BadRequest(ex);
+            }
+            catch (Exception)
+            {
                 return await HttpHelper.ServerError();
             }
         }
