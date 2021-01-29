@@ -39,5 +39,15 @@ namespace Infra.Db.MongoDb
             var account = await sut.Add(fakeData);
             account.Should().BeEquivalentTo(fakeData);
         }
+
+        [Fact]
+        public async Task ShouldInsertAccountOnDatabase()
+        {
+            var sut = this.MakeSut();
+            var fakeData = MakeFakeAccountModel();
+            var account = await sut.Add(fakeData);
+            var count = await this.accountCollection.CountDocumentsAsync(x => true);
+            count.Should().Be(1);
+        }
     }
 }
