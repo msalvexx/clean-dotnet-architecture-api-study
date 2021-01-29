@@ -32,7 +32,7 @@ namespace Test.Presentation.Controllers
                 Password = "any_password",
                 PasswordConfirmation = "any_password"
             };
-            var request = new HttpRequest { Body = body };
+            var request = new HttpRequest<ISignUpRequest>() { Body = body };
             var response = await sut.HandleAsync(request);
             var comparer = new ObjectsComparer.Comparer<ISignUpRequest>();
             validatorMock.Verify(x => x.Validate(It.Is<ISignUpRequest>(x => comparer.Compare(x, body))), Times.Once);
@@ -46,7 +46,7 @@ namespace Test.Presentation.Controllers
             var addAccountMock = MakeAddAccountMock();
             validatorMock.Setup(x => x.Validate(It.IsAny<object>())).Throws(e);
             var sut = MakeSut(validatorMock, addAccountMock);
-            var request = new HttpRequest
+            var request = new HttpRequest<ISignUpRequest>()
             {
                 Body = new SignUpRequest
                 {
@@ -75,7 +75,7 @@ namespace Test.Presentation.Controllers
             var addAccountMock = MakeAddAccountMock();
             validatorMock.Setup(x => x.Validate(It.IsAny<object>())).Throws(new Exception());
             var sut = MakeSut(validatorMock, addAccountMock);
-            var request = new HttpRequest
+            var request = new HttpRequest<ISignUpRequest>()
             {
                 Body = new SignUpRequest
                 {
@@ -95,7 +95,7 @@ namespace Test.Presentation.Controllers
             var validatorMock = MakeValidatorMock();
             var addAccountMock = MakeAddAccountMock();
             var sut = MakeSut(validatorMock, addAccountMock);
-            var request = new HttpRequest
+            var request = new HttpRequest<ISignUpRequest>()
             {
                 Body = new SignUpRequest
                 {
@@ -123,7 +123,7 @@ namespace Test.Presentation.Controllers
             var addAccountMock = MakeAddAccountMock();
             addAccountMock.Setup(x => x.Add(It.IsAny<IAddAccountModel>())).Throws(new Exception());
             var sut = MakeSut(validatorMock, addAccountMock);
-            var request = new HttpRequest
+            var request = new HttpRequest<ISignUpRequest>()
             {
                 Body = new SignUpRequest
                 {
@@ -152,7 +152,7 @@ namespace Test.Presentation.Controllers
             }.ActLike<IAccount>();
             addAccountMock.Setup(x => x.Add(It.IsAny<IAddAccountModel>())).Returns(Task.Run(() => validAccount));
             var sut = MakeSut(validatorMock, addAccountMock);
-            var request = new HttpRequest
+            var request = new HttpRequest<ISignUpRequest>()
             {
                 Body = new SignUpRequest
                 {

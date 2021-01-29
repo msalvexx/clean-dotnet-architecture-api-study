@@ -10,11 +10,12 @@ namespace Main.Routes
     {
         public static IEndpointRouteBuilder MapAuthRoutes(this IEndpointRouteBuilder endpoints, IApplicationBuilder app)
         {
-            endpoints.MapPost("signup", GetController<SignUpController>(app).AdaptRoute<SignUpRequest>());
+            var controller = GetController<ISignUpRequest>(app);
+            endpoints.MapPost("signup", controller.AdaptRoute());
             return endpoints;
         }
 
-        private static TController GetController<TController>(IApplicationBuilder app) where TController : IController =>
-            (TController)app.ApplicationServices.GetService(typeof(TController));
+        private static IController<TRequest> GetController<TRequest>(IApplicationBuilder app) where TRequest : class
+            => (IController<TRequest>)app.ApplicationServices.GetService(typeof(IController<TRequest>));
     }
 }

@@ -7,7 +7,7 @@ using Presentation.Protocols;
 
 namespace Presentation.Controllers.SignUp
 {
-    public class SignUpController : IController
+    public class SignUpController : IController<ISignUpRequest>
     {
         private readonly IValidator validator;
         private readonly IAddAccount addAccount;
@@ -18,17 +18,16 @@ namespace Presentation.Controllers.SignUp
             this.addAccount = addAccount;
         }
 
-        public async Task<IHttpResponse> HandleAsync(IHttpRequest request)
+        public async Task<IHttpResponse> HandleAsync(IHttpRequest<ISignUpRequest> request)
         {
             try
             {
-                dynamic body = request.Body;
-                this.validator.Validate(body);
+                this.validator.Validate(request.Body);
                 var account = await this.addAccount.Add(new AddAccountModel
                 {
-                    Name = body.Name,
-                    Email = body.Email,
-                    Password = body.Password
+                    Name = request.Body.Name,
+                    Email = request.Body.Email,
+                    Password = request.Body.Password
                 });
                 return await HttpHelper.Success(account);
             }

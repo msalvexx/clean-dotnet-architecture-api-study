@@ -1,8 +1,8 @@
 namespace Presentation.Protocols
 {
-    public interface IHttpRequest
+    public interface IHttpRequest<TRequest> where TRequest : class
     {
-        public object Body { get; set; }
+        public TRequest Body { get; set; }
     }
 
     public interface IHttpResponse
@@ -11,9 +11,9 @@ namespace Presentation.Protocols
         public object Body { get; set; }
     }
 
-    public class HttpRequest : IHttpRequest
+    public class HttpRequest<TRequest> : IHttpRequest<TRequest> where TRequest : class
     {
-        public object Body { get; set; }
+        public TRequest Body { get; set; }
     }
 
     public class HttpResponse : IHttpResponse

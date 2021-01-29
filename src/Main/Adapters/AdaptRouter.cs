@@ -7,7 +7,7 @@ namespace Main.Adapters
 {
     public static class AdaptRouterConfigurator
     {
-        public static RequestDelegate AdaptRoute<TRequest>(this IController controller) where TRequest : class =>
+        public static RequestDelegate AdaptRoute<TRequest>(this IController<TRequest> controller) where TRequest : class =>
             async context =>
             {
                 if (!context.Request.HasJsonContentType())
@@ -31,7 +31,7 @@ namespace Main.Adapters
                     });
                 }
             };
-        private static async Task<Presentation.Protocols.HttpRequest> MapToRequest<TRequest>(HttpContext context) where TRequest : class => new Presentation.Protocols.HttpRequest
+        private static async Task<HttpRequest<TRequest>> MapToRequest<TRequest>(HttpContext context) where TRequest : class => new HttpRequest<TRequest>
         {
             Body = await context.Request.ReadFromJsonAsync<TRequest>()
         };

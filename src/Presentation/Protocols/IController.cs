@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace Presentation.Protocols
 {
-    public interface IController
+    public interface IController<TRequest> where TRequest : class
     {
-        Task<IHttpResponse> HandleAsync(IHttpRequest request);
+        Task<IHttpResponse> HandleAsync(IHttpRequest<TRequest> request);
     }
 }
