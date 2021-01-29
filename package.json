@@ -6,7 +6,8 @@
     "postinstall": "dotnet tool install --global dotnet-format || echo 'continuing...'",
     "remove:testfolder": "rmdir \"TestResults\" /Q /S || echo 'continuing...",
     "test:watch": "dotnet watch --project src/Test/Test.csproj test",
-    "test:ci": "npm run remove:testfolder && dotnet test src/src.sln --collect:\"XPlat Code Coverage\" --settings src/coverlet.runsettings && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html "
+    "test:ci": "npm run remove:testfolder && dotnet test src/src.sln --collect:\"XPlat Code Coverage\" --settings src/coverlet.runsettings && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html ",
+    "start": "dotnet run --project src/Main/Main.csproj"
   },
   "devDependencies": {
     "git-commit-msg-linter": "^3.0.0",
