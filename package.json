@@ -4,9 +4,13 @@
   "description": "",
   "scripts": {
     "postinstall": "dotnet tool install --global dotnet-format || echo 'continuing...'",
+    "restore": "dotnet restore src/src.sln",
+    "build": "dotnet build src/src.sln",
     "remove:testfolder": "rmdir \"TestResults\" /Q /S || echo 'continuing...",
     "test:watch": "dotnet watch --project src/Test/Test.csproj test",
-    "test:ci": "npm run remove:testfolder && dotnet test src/src.sln --collect:\"XPlat Code Coverage\" --settings src/coverlet.runsettings && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html ",
+    "test:coverage": "dotnet test src/src.sln --collect:\"XPlat Code Coverage\" --settings src/coverlet.runsettings",
+    "test:ci": "npm run remove:testfolder && npm run test:coverage && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html ",
+    "publish": "dotnet publish src/src.sln",
     "start": "dotnet run --project src/Main/Main.csproj"
   },
   "devDependencies": {

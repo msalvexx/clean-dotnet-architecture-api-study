@@ -1,0 +1,40 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+      - releases/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - script: npm run restore
+    displayName: "Recupera as dependências da aplicação"
+  
+  - script: npm run build
+    displayName: "Build da aplicação"
+  
+  - script: npm run test:coverage -- --no-build
+    displayName: "Executa testes e coleta resultados da cobertura de testes"
+
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publica os resultados da cobertura de testes'
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: 'TestResults/**/coverage.cobertura.xml'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Publica a aplicação'
+    inputs:
+      command: publish
+      projects: '**/*.csproj'
+      publishWebProjects: True
+      arguments: '--output $(Build.ArtifactStagingDirectory)'
+      zipAfterPublish: True
+  
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publica os artefatos'
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+      artifactName: 'clean-dotnet-api'
