@@ -12,7 +12,7 @@
     "test:ci": "npm run remove:testfolder && npm run test:coverage && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html ",
     "publish": "dotnet publish src/src.sln",
     "start": "dotnet run --project src/Main/Main.csproj",
-    "up": "npm run build -- -o dist && docker build . --tag clean-dotnet --no-cache && docker run clean-dotnet -p 5001:5001"
+    "up": "npm run build -- -o dist && docker build . --tag clean-dotnet --no-cache && docker run -p 5000:80 --name clean-dotnet clean-dotnet"
   },
   "devDependencies": {
     "git-commit-msg-linter": "^3.0.0",
