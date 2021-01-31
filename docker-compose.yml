@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mongo:
+    container_name: mongo-container
+    image: mongo:3
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  api:
+    container_name: clean-dotnet
+    build: .
+    image: clean-dotnet
+    restart: always
+    command: dotnet Main.dll
+    volumes:
+      - ./dist/:/home/site/wwwroot/dist/
+    ports:
+      - "5000:80"
+    links:
+      - mongo

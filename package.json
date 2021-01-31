@@ -12,7 +12,8 @@
     "test:ci": "npm run remove:testfolder && npm run test:coverage && reportgenerator \"-reports:TestResults\\**\\coverage.cobertura.xml\" \"-targetdir:TestResults\\report\" -reporttypes:Html ",
     "publish": "dotnet publish src/src.sln",
     "start": "dotnet run --project src/Main/Main.csproj",
-    "up": "npm run build -- -o dist && docker build . --tag clean-dotnet --no-cache && docker run -p 5000:80 --name clean-dotnet clean-dotnet"
+    "up": "npm run build -- -o dist && docker build . --tag clean-dotnet --no-cache && docker-compose up -d",
+    "down": "docker-compose down"
   },
   "devDependencies": {
     "git-commit-msg-linter": "^3.0.0",
