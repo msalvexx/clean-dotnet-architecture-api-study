@@ -1,4 +1,5 @@
 using Main.Adapters;
+using Main.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Presentation.Controllers.SignUp;
@@ -10,12 +11,9 @@ namespace Main.Routes
     {
         public static IEndpointRouteBuilder MapAuthRoutes(this IEndpointRouteBuilder endpoints, IApplicationBuilder app)
         {
-            var controller = GetController<ISignUpRequest>(app);
+            var controller = Helper.GetRegisteredService<IController<ISignUpRequest>>(app);
             endpoints.MapPost("signup", controller.AdaptRoute());
             return endpoints;
         }
-
-        private static IController<TRequest> GetController<TRequest>(IApplicationBuilder app) where TRequest : class
-            => (IController<TRequest>)app.ApplicationServices.GetService(typeof(IController<TRequest>));
     }
 }

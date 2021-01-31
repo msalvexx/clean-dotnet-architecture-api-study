@@ -8,7 +8,7 @@
             <DataCollector friendlyName="XPlat code coverage">
                 <Configuration>
                     <Format>cobertura</Format>
-                    <Exclude>[*]Main.*,[*]Main.Factories.Controllers*,[*]Main.Factories.Data*,[*]Main.Factories.Infra*,[*]Main.Adapters*,[*]Main.Routes*,[*]Infra.Db.MongoDb.Configurators*,[*]Infra.Db.MongoDb.Mappers*,[*]Infra.Db.MongoDb.Models*,[*]Infra.Adapters*,[*]Test*</Exclude>
+                    <Exclude>[*]Main.*,[*]Main.Helpers*[*],Main.Factories.Controllers*,[*]Main.Factories.Data*,[*]Main.Factories.Infra*,[*]Main.Adapters*,[*]Main.Routes*,[*]Infra.Db.MongoDb.Configurators*,[*]Infra.Db.MongoDb.Mappers*,[*]Infra.Db.MongoDb.Models*,[*]Infra.Adapters*,[*]Test*</Exclude>
                     <SingleHit>false</SingleHit>
                     <UseSourceLink>true</UseSourceLink>
                     <IncludeTestAssembly>true</IncludeTestAssembly>

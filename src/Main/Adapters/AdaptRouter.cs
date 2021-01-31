@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Main.Helpers;
 using Microsoft.AspNetCore.Http;
 using Presentation.Protocols;
 
@@ -31,9 +32,14 @@ namespace Main.Adapters
                     });
                 }
             };
-        private static async Task<HttpRequest<TRequest>> MapToRequest<TRequest>(HttpContext context) where TRequest : class => new HttpRequest<TRequest>
+
+        public static async Task<HttpRequest<TRequest>> MapToRequest<TRequest>(HttpContext context) where TRequest : class
         {
-            Body = await context.Request.ReadFromJsonAsync<TRequest>()
-        };
+            var concreteClassType = Helper.GetConcreteClass<TRequest>();
+            return new HttpRequest<TRequest>
+            {
+                Body = (TRequest)await context.Request.ReadFromJsonAsync(concreteClassType)
+            };
+        }
     }
 }
